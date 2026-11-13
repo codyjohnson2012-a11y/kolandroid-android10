@@ -22,7 +22,7 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v4
       with:
-        packages: 'platforms;android-23'
+        packages: 'platforms;android-23 build-tools;23.0.1'
 
     - name: Set up JDK 8 (For old Gradle build)
       uses: actions/setup-java@v4
