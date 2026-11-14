@@ -13,6 +13,12 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v4
 
+    - name: Install 32-bit libraries for legacy AAPT
+      run: |
+        sudo dpkg --add-architecture i386
+        sudo apt-get update
+        sudo apt-get install -y libc6:i386 libstdc++6:i386 zlib1g:i386
+
     - name: Set up JDK 17 (For Android SDK tools)
       uses: actions/setup-java@v4
       with:
@@ -34,7 +40,9 @@ jobs:
       run: chmod +x gradlew
 
     - name: Build Debug APK
-      run: ./gradlew assembleDebug
+      env:
+        SLAVE_AAPT_TIMEOUT: 30
+      run: ./gradlew assembleDebug --no-daemon
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
